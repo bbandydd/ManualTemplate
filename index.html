@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Template</title>
+    
+</head>
+<body>
+    <div id="app" />
+
+    <script id="container_template" type="text/html">
+        <div id="container">
+            <p>{{name}}，您好！</p>
+            <ul id="list"></ul>
+        </div>
+    </script>
+
+    <script id="item_template" type="text/html">
+        <li>
+            <span>{{index}}</span>
+            <button class="btn">Button</button>
+        </li>
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        var initTemplate = function(id, data) {
+            var $template = $("#" + id).html();
+            var reg = new RegExp("{{(\\w+)}}", "ig");
+            $template = $template.replace(reg, function (text, key) { return data[key]; });
+            $template = $template.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+
+            return $($.parseHTML($template));
+        }
+
+        $().ready(function() {
+            var data = {name: 'Andy'};
+            var $container = initTemplate('container_template', data);
+            var $list = $container.find('#list');
+
+            $("#app").append($container);
+
+            for(var i=0;i<10;i++) {
+                var item = new Item(i);
+
+                console.log(item.id);
+                $list.append(item.append());
+            }
+        });  
+
+        function Item(index) {
+            var id = 'Btn'+ index;
+            var data = { index: index };
+            var $item_template = initTemplate('item_template', data);
+
+            $item_template.find('.btn').click(function(){
+                alert(index);
+            });
+
+            return {
+                id: id,
+                append: function() {
+                    return $item_template;
+                }
+            }
+        }   
+    </script>
+</body>
+</html>
