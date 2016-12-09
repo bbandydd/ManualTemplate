@@ -34,18 +34,22 @@
         }
 
         $().ready(function() {
-            var data = {name: 'Andy'};
-            var $container = initTemplate('container_template', data);
-            var $list = $container.find('#list');
 
-            $("#app").append($container);
+            ['Andy', 'Amy'].map(function(name) {
+                var data = {name: name};
+                var $container = initTemplate('container_template', data);
+                var $list = $container.find('#list');
+                
+                $("#app").append($container);
+            
+                for(var i=0;i<5;i++) {
+                    var item = new Item(i);
 
-            for(var i=0;i<10;i++) {
-                var item = new Item(i);
-
-                console.log(item.id);
-                $list.append(item.append());
-            }
+                    console.log(item.id);
+                    $list.append(item.append());
+                }
+            })
+           
         });  
 
         function Item(index) {
