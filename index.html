@@ -39,6 +39,24 @@
             return $($.parseHTML($template));
         }
 
+        // Item constructor
+        function Item(index) {
+            this.id = 'Btn'+ index;
+            this.index = index;
+            this.data = { index: index };
+        }
+
+        Item.prototype.render = function(target) {
+            var that = this;
+            var $item_template = template.createElement('item_template', this.data);
+            
+            $item_template.find('.btn').click(function(){
+                alert(that.index);
+            });
+
+            $(target).append($item_template);
+        }
+
         var template = new Template();
 
         $().ready(function() {
@@ -54,28 +72,11 @@
                     var item = new Item(i);
 
                     console.log(item.id);
-                    $list.append(item.append());
+                    item.render($list);
                 }
             })
            
         });  
-
-        function Item(index) {
-            var id = 'Btn'+ index;
-            var data = { index: index };
-            var $item_template = template.createElement('item_template', data);
-
-            $item_template.find('.btn').click(function(){
-                alert(index);
-            });
-
-            return {
-                id: id,
-                append: function() {
-                    return $item_template;
-                }
-            }
-        }   
     </script>
 </body>
 </html>
