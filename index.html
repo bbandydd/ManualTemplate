@@ -24,7 +24,13 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        var initTemplate = function(id, data) {
+
+        // Template constructor
+        function Template() {
+
+        }
+
+        Template.prototype.createElement = function(id, data) {
             var $template = $("#" + id).html();
             var reg = new RegExp("{{(\\w+)}}", "ig");
             $template = $template.replace(reg, function (text, key) { return data[key]; });
@@ -33,11 +39,13 @@
             return $($.parseHTML($template));
         }
 
+        var template = new Template();
+
         $().ready(function() {
 
             ['Andy', 'Amy'].map(function(name) {
                 var data = {name: name};
-                var $container = initTemplate('container_template', data);
+                var $container = template.createElement('container_template', data);
                 var $list = $container.find('#list');
                 
                 $("#app").append($container);
@@ -55,7 +63,7 @@
         function Item(index) {
             var id = 'Btn'+ index;
             var data = { index: index };
-            var $item_template = initTemplate('item_template', data);
+            var $item_template = template.createElement('item_template', data);
 
             $item_template.find('.btn').click(function(){
                 alert(index);
